@@ -1,19 +1,17 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 const CreateOrChoose = (props) => {
-  let history = useHistory();
-
   const createWorkoutHandler = () => {
-    history.push('/createWorkout');
+    props.history.push('/createWorkout');
   };
 
   const chooseWorkoutHandler = () => {
-    history.push('/workoutList');
+    props.history.push('/workoutList');
   };
 
   return (
@@ -25,20 +23,20 @@ const CreateOrChoose = (props) => {
     >
       <Grid item>
         <Button
-          onClick={createWorkoutHandler}
           variant="contained"
           color="secondary"
           size="large"
+          onClick={createWorkoutHandler}
         >
           Create New Workout
         </Button>
       </Grid>
       <Grid item>
         <Button
-          onClick={chooseWorkoutHandler}
           variant="contained"
           color="secondary"
           size="large"
+          onClick={chooseWorkoutHandler}
         >
           Choose Existing Workout
         </Button>
@@ -59,8 +57,9 @@ const styles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   buttonContainer: {
+    flex: 1,
     marginTop: 100,
   },
 }));
 
-export default CreateOrChoose;
+export default withRouter(CreateOrChoose);

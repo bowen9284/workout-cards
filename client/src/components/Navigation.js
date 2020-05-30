@@ -21,9 +21,8 @@ const Navigation = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={styles.title}>
-            News
+            Workout Cards
           </Typography>
-          <Button color="inherit">Workout Cards</Button>
         </Toolbar>
       </AppBar>
     </div>

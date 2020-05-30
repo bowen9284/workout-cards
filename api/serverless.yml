@@ -1,0 +1,16 @@
+service:
+  name: workout-deck
+
+  plugins:
+    - serverless-webpack
+    - serverless-offline
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}

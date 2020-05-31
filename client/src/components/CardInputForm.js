@@ -1,45 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import * as Yup from 'yup';
-import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import { v4 as uuid } from 'uuid';
+import { withRouter } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
+import { createWorkout } from '../api/workouts-api';
 
-const CardInputForm = () => {
-  const [value, setValue] = useState('');
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
-
+const CardInputForm = (props) => {
   const workoutOptions = [
-    { name: 'squats', value: 'squats' },
-    { name: 'bicep curls', value: 'bicepCurls' },
-    { name: 'push ups', value: 'pushUps' },
-    { name: 'lunges', value: 'lunges' },
-    { name: 'crunches', value: 'crunches' },
-    { name: '', value: '' },
-    { name: '', value: '' },
-    { name: '', value: '' },
-    { name: '', value: '' },
-    { name: '', value: '' },
+    { name: 'Please Select...', value: 'Please Select...' },
+    { name: 'squats', value: 'Squats' },
+    { name: 'bicep curls', value: 'Bicep Curls' },
+    { name: 'push ups', value: 'Push Ups' },
+    { name: 'lunges', value: 'Lunges' },
+    { name: 'crunches', value: 'Crunches' },
+    { name: 'jumping jacks', value: 'Jumping Jacks' },
+    { name: 'squat jump', value: 'Squat Jump' },
   ];
 
   const formik = useFormik({
     initialValues: {
       createdBy: '',
       workoutName: '',
-      heartSelect: 'squats',
+      heartsActivity: workoutOptions[0].name,
+      spadesActivity: workoutOptions[0].name,
+      clubsActivity: workoutOptions[0].name,
+      diamondsActivity: workoutOptions[0].name,
+      jacksActivity: workoutOptions[0].name,
+      queensActivity: workoutOptions[0].name,
+      kingsActivity: workoutOptions[0].name,
+      acesActivity: workoutOptions[0].name,
+      jokersActivity: workoutOptions[0].name,
+      timestamp: workoutOptions[0].name,
     },
     validationSchema: Yup.object({
       createdBy: Yup.string()
@@ -52,9 +50,21 @@ const CardInputForm = () => {
         .required('Required'),
     }),
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+      let workoutToSave = { ...values };
+      workoutToSave.workoutId = uuid();
+
+      _handleSubmit(workoutToSave);
     },
   });
+
+  async function _handleSubmit(workout) {
+    const result = await createWorkout('mocktoken', workout);
+    if (result) {
+      props.history.push('/');
+    }
+  }
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid item xs={12}>
@@ -86,116 +96,153 @@ const CardInputForm = () => {
             <InputLabel id="heart-select">Hearts</InputLabel>
             <Select
               labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              name="heartsActivity"
+              value={formik.values.heartsActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <InputLabel id="heart-select">Hearts</InputLabel>
+            <InputLabel id="spade-select">Spades</InputLabel>
             <Select
-              labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              labelId="spade-select"
+              name="spadesActivity"
+              value={formik.values.spadesActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <InputLabel id="heart-select">Diamonds</InputLabel>
+            <InputLabel id="diamond-select">Diamonds</InputLabel>
             <Select
-              labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              labelId="diamond-select"
+              name="diamondsActivity"
+              value={formik.values.diamondsActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <InputLabel id="heart-select">Clubs</InputLabel>
+            <InputLabel id="club-select">Clubs</InputLabel>
             <Select
-              labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              labelId="club-select"
+              name="clubsActivity"
+              value={formik.values.clubsActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <InputLabel id="heart-select">Jack</InputLabel>
+            <InputLabel id="jack-select">Jack</InputLabel>
             <Select
-              labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              labelId="jack-select"
+              name="jacksActivity"
+              value={formik.values.jacksActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <InputLabel id="heart-select">Queen</InputLabel>
+            <InputLabel id="queen-select">Queen</InputLabel>
             <Select
-              labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              labelId="queen-select"
+              name="queensActivity"
+              value={formik.values.queensActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <InputLabel id="heart-select">King</InputLabel>
+            <InputLabel id="king-select">King</InputLabel>
             <Select
-              labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              labelId="king-select"
+              name="kingsActivity"
+              value={formik.values.kingsActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <InputLabel id="heart-select">Joker</InputLabel>
+            <InputLabel id="ace-select">Ace</InputLabel>
             <Select
-              labelId="heart-select"
-              id="demo-simple-select"
-              value={formik.values.heartSelect}
-              onChange={handleChange}
+              labelId="ace-select"
+              name="acesActivity"
+              value={formik.values.acesActivity}
+              onChange={formik.handleChange}
             >
-              <MenuItem value={'lunges'}>Lunges</MenuItem>
-              <MenuItem value={'squats'}>Squats</MenuItem>
-              <MenuItem value={'pushups'}>Pushups</MenuItem>
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
 
           <Grid item>
-            <Button type="submit" variant="contained" color="primary">
+            <InputLabel id="joker-select">Joker</InputLabel>
+            <Select
+              labelId="joker-select"
+              name="jokersActivity"
+              value={formik.values.jokersActivity}
+              onChange={formik.handleChange}
+            >
+              {workoutOptions.map((workout) => (
+                <MenuItem key={workout.value} value={workout.value}>
+                  {workout.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+
+          <Grid item>
+            <Button
+              type="submit"
+              onSubmit={formik.handleSubmit}
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
           </Grid>
@@ -205,13 +252,4 @@ const CardInputForm = () => {
   );
 };
 
-const classes = makeStyles({
-  container: {
-    flex: 1,
-    marginTop: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-export default CardInputForm;
+export default withRouter(CardInputForm);

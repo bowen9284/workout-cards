@@ -6,7 +6,7 @@ const WorkoutBuilder = () => {
   console.log('builder');
   return (
     <Grid item>
-      <CardInputForm></CardInputForm>
+      <CardInputForm/>
     </Grid>
   );
 };

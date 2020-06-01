@@ -20,7 +20,6 @@ export const handler: APIGatewayProxyHandler = async (
   let newWorkout: Workout = JSON.parse(event.body);
 
   const authorization = event.headers.Authorization;
-  console.log('auth ',authorization)
   const split = authorization.split(' ');
   const jwtToken = split[1];
   const userId = getUserId(jwtToken);

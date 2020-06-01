@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 const WorkoutCard = (props) => {
   const { currentCard, workoutActivity } = props;
-  console.log('currentcard', currentCard);
+  
   const image = require(`../assets${currentCard.image}`);
 
   const currentExerciseContent = () => {
@@ -49,14 +49,6 @@ const WorkoutCard = (props) => {
       </CardContent>
     );
   };
-
-  //   const cardDetail = () => {
-  //       switch (cardActivity) {
-  //           default
-  //       }
-
-  //       return (<div>afwfag</div>)
-  //   }
 
   return (
     <Grid

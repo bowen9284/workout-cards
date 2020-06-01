@@ -34,7 +34,6 @@ const App = (props) => {
   };
 
   const generateCurrentPage = () => {
-    console.log('auth props', props.auth);
     if (!props.auth.isAuthenticated()) {
       return null;
     }

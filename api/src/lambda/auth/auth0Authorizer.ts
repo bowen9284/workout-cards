@@ -15,13 +15,11 @@ export const handler = middy(
     context
   ): Promise<CustomAuthorizerResult> => {
     console.log('auth event', event);
-    console.log('context', context);
     try {
       const decodedToken = verifyToken(
         event.authorizationToken,
         context.AUTH_0_SECRET[secretField]
       );
-      console.log('User was authorized', decodedToken);
 
       return {
         principalId: decodedToken.sub,
@@ -37,8 +35,6 @@ export const handler = middy(
         },
       };
     } catch (e) {
-      console.log('User was not authorized', e.message);
-
       return {
         principalId: 'user',
         policyDocument: {
@@ -66,8 +62,6 @@ function verifyToken(authHeader: string, secret: string): JwtToken {
 
   const split = authHeader.split(' ');
   const token = split[1];
-  console.log('token', token);
-  console.log('secret', secret);
 
   return verify(token, secret) as JwtToken;
 }

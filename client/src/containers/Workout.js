@@ -66,9 +66,7 @@ const Workout = (props) => {
     cards.splice(currentCardIndex, 1);
     setDeckSize(deckSize - 1);
 
-    console.log('size', deckSize);
-
-    if (deckSize === 1) {
+    if (deckSize === 0) {
       setButtonAction('Done');
       return;
     }

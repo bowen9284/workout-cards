@@ -18,7 +18,6 @@ const useStyles = makeStyles({
 });
 
 function WorkoutList({ history, auth }) {
-  console.log('allprops wol', auth);
   const [workoutList, setWorkoutList] = useState([]);
   let { path } = useRouteMatch();
 

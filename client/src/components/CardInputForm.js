@@ -50,7 +50,6 @@ const CardInputForm = (props) => {
         .required('Required'),
     }),
     onSubmit: (values) => {
-      console.log(values);
       let workoutToSave = { ...values };
       workoutToSave.workoutId = uuid();
 
@@ -59,7 +58,6 @@ const CardInputForm = (props) => {
   });
 
   async function _handleSubmit(workout) {
-    console.log(props.auth);
     const result = await createWorkout(props.auth.idToken, workout);
     if (result) {
       props.history.push('/');

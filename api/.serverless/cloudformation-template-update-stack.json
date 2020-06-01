@@ -193,6 +193,70 @@
         }
       }
     },
+    "EnterpriseLogAccessIamRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::802587217904:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "sts:ExternalId": "ServerlessEnterprise-LTLDW09NG5khk3FNtY"
+                }
+              }
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "LogFilterAccess",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:FilterLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "AuthLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "CreateWorkoutLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "GetWorkoutsLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "GetWorkoutLogGroup",
+                        "Arn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
     "AuthLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -200,10 +264,10 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/Auth.zip"
+          "S3Key": "serverless/workout-deck/dev/1590970275611-2020-06-01T00:11:15.611Z/Auth.zip"
         },
         "FunctionName": "workout-deck-dev-Auth",
-        "Handler": "src/lambda/auth/auth0Authorizer.handler",
+        "Handler": "s_Auth.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -227,14 +291,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AuthLambdaVersionH7pwIZt0xABCyQdyCAwWeOxSsCdT9zD6WEtd228zY": {
+    "AuthLambdaVersionaDZX8CJAFFqnTUmD6xsthV8D9Aivzo9kghQe9TaVW0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthLambdaFunction"
         },
-        "CodeSha256": "QkDQlvrfvWmzmNbx+A3sER4C3CrgwjjMYXgDRKK17As="
+        "CodeSha256": "Z3OBuSFZw/5OHGVh1m+cnBJcfd3j60NDCSWPc5Kzu+A="
       }
     },
     "CreateWorkoutLambdaFunction": {
@@ -244,10 +308,10 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/CreateWorkout.zip"
+          "S3Key": "serverless/workout-deck/dev/1590970275611-2020-06-01T00:11:15.611Z/CreateWorkout.zip"
         },
         "FunctionName": "workout-deck-dev-CreateWorkout",
-        "Handler": "src/lambda/http/createWorkout.handler",
+        "Handler": "s_CreateWorkout.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -271,14 +335,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateWorkoutLambdaVersionTxnfQWs63rpCxpcIngskOsqIy0hbh4EbiuUYWGo1mTo": {
+    "CreateWorkoutLambdaVersionPA3RhZ2satDRAvgcyqq8qmlO0whyJSfqn9BV0kmJeto": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateWorkoutLambdaFunction"
         },
-        "CodeSha256": "vKW3YXBVc+dxVnHfCp4qARLaYVbRjjrfIuHz6GW5GbQ="
+        "CodeSha256": "+Iq2N7dZDmpyDOk93ODnO0GBoc7zxqJtJ6150R8G2Ow="
       }
     },
     "GetWorkoutsLambdaFunction": {
@@ -288,10 +352,10 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/GetWorkouts.zip"
+          "S3Key": "serverless/workout-deck/dev/1590970275611-2020-06-01T00:11:15.611Z/GetWorkouts.zip"
         },
         "FunctionName": "workout-deck-dev-GetWorkouts",
-        "Handler": "src/lambda/http/getWorkouts.handler",
+        "Handler": "s_GetWorkouts.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -315,14 +379,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetWorkoutsLambdaVersion8MAXoWdQ28tLWDEeIMx2jaqy3udcoKAnbtbZMxzN4": {
+    "GetWorkoutsLambdaVersionLW0KeuOnGAP0aYgvCwMQPFDmcSNixWXlJshIs0up1Xo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetWorkoutsLambdaFunction"
         },
-        "CodeSha256": "f9BC6yIJ5kXRcTL0o/5bIVCAj6yWDxukw8S1HAi/F4M="
+        "CodeSha256": "Dj3sB06ZFAJGPQKo/OG7UnY5xxJMnX6FBRrYK1PtDAI="
       }
     },
     "GetWorkoutLambdaFunction": {
@@ -332,10 +396,10 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/GetWorkout.zip"
+          "S3Key": "serverless/workout-deck/dev/1590970275611-2020-06-01T00:11:15.611Z/GetWorkout.zip"
         },
         "FunctionName": "workout-deck-dev-GetWorkout",
-        "Handler": "src/lambda/http/getWorkout.handler",
+        "Handler": "s_GetWorkout.handler",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -359,14 +423,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetWorkoutLambdaVersioneTvqccCMg9dERJbCnG7GF5FD84otpvVS32WoREMf4": {
+    "GetWorkoutLambdaVersionAKlitfxEaAXHIosen7yNIX1ujSneflU00h73dRbvTk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetWorkoutLambdaFunction"
         },
-        "CodeSha256": "lYXHsdPN1pfa4gX4ly5Rl5hWFPOUOur4swM4I9+g0DM="
+        "CodeSha256": "6qBHi0HSXkFzqvCa+mqHMkbqp1gIkKLkQUzt8LgQGNI="
       }
     },
     "ApiGatewayRestApi": {
@@ -725,7 +789,7 @@
         "Type": "TOKEN"
       }
     },
-    "ApiGatewayDeployment1590968253226": {
+    "ApiGatewayDeployment1590970234472": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -890,6 +954,133 @@
         }
       }
     },
+    "ApiGatewayLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/api-gateway/workout-deck-dev"
+      }
+    },
+    "CustomApiGatewayAccountCloudWatchRole": {
+      "Type": "Custom::ApiGatewayAccountRole",
+      "Version": 1,
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomDashresourceDashapigwDashcwDashroleLambdaFunction",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "IamRoleCustomResourcesLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "workout-deck",
+                  "custom-resources-lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      ":",
+                      [
+                        "arn",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        "iam:",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        "role/*"
+                      ]
+                    ]
+                  },
+                  "Action": [
+                    "iam:AttachRolePolicy",
+                    "iam:CreateRole",
+                    "iam:ListAttachedRolePolicies",
+                    "iam:PassRole"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      ":",
+                      [
+                        "arn",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        "apigateway:*::/account"
+                      ]
+                    ]
+                  },
+                  "Action": [
+                    "apigateway:GET",
+                    "apigateway:PATCH"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CustomDashresourceDashapigwDashcwDashroleLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/workout-deck/dev/1590970275611-2020-06-01T00:11:15.611Z/custom-resources.zip"
+        },
+        "FunctionName": "workout-deck-dev-custom-resource-apigw-cw-role",
+        "Handler": "apiGatewayCloudWatchRole/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs12.x",
+        "Timeout": 180,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleCustomResourcesLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "IamRoleCustomResourcesLambdaExecution"
+      ]
+    },
     "WorkoutsDynamoDBTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
@@ -983,6 +1174,56 @@
           "Ref": "KMSKey"
         }
       }
+    },
+    "CloudWatchLogsSubscriptionFilterAuthLogGroup": {
+      "Type": "AWS::Logs::SubscriptionFilter",
+      "Properties": {
+        "DestinationArn": "arn:aws:logs:us-east-1:802587217904:destination:LTLDW09NG5khk3FNtY#pqVYw7rmv39sLG0vB8#workout-deck#dev",
+        "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
+        "LogGroupName": {
+          "Ref": "AuthLogGroup"
+        }
+      }
+    },
+    "CloudWatchLogsSubscriptionFilterCreateWorkoutLogGroup": {
+      "Type": "AWS::Logs::SubscriptionFilter",
+      "Properties": {
+        "DestinationArn": "arn:aws:logs:us-east-1:802587217904:destination:LTLDW09NG5khk3FNtY#pqVYw7rmv39sLG0vB8#workout-deck#dev",
+        "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
+        "LogGroupName": {
+          "Ref": "CreateWorkoutLogGroup"
+        }
+      }
+    },
+    "CloudWatchLogsSubscriptionFilterGetWorkoutsLogGroup": {
+      "Type": "AWS::Logs::SubscriptionFilter",
+      "Properties": {
+        "DestinationArn": "arn:aws:logs:us-east-1:802587217904:destination:LTLDW09NG5khk3FNtY#pqVYw7rmv39sLG0vB8#workout-deck#dev",
+        "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
+        "LogGroupName": {
+          "Ref": "GetWorkoutsLogGroup"
+        }
+      }
+    },
+    "CloudWatchLogsSubscriptionFilterGetWorkoutLogGroup": {
+      "Type": "AWS::Logs::SubscriptionFilter",
+      "Properties": {
+        "DestinationArn": "arn:aws:logs:us-east-1:802587217904:destination:LTLDW09NG5khk3FNtY#pqVYw7rmv39sLG0vB8#workout-deck#dev",
+        "FilterPattern": "?\"REPORT RequestId: \" ?\"SERVERLESS_ENTERPRISE\"",
+        "LogGroupName": {
+          "Ref": "GetWorkoutLogGroup"
+        }
+      }
+    },
+    "CloudWatchLogsSubscriptionFilterApiGatewayLogGroup": {
+      "Type": "AWS::Logs::SubscriptionFilter",
+      "Properties": {
+        "DestinationArn": "arn:aws:logs:us-east-1:802587217904:destination:LTLDW09NG5khk3FNtY#pqVYw7rmv39sLG0vB8#workout-deck#dev",
+        "FilterPattern": "\"SLS_ACCESS_LOG\"",
+        "LogGroupName": {
+          "Ref": "ApiGatewayLogGroup"
+        }
+      }
     }
   },
   "Outputs": {
@@ -991,28 +1232,36 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
+    "EnterpriseLogAccessIamRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "EnterpriseLogAccessIamRole",
+          "Arn"
+        ]
+      }
+    },
     "AuthLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthLambdaVersionH7pwIZt0xABCyQdyCAwWeOxSsCdT9zD6WEtd228zY"
+        "Ref": "AuthLambdaVersionaDZX8CJAFFqnTUmD6xsthV8D9Aivzo9kghQe9TaVW0"
       }
     },
     "CreateWorkoutLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateWorkoutLambdaVersionTxnfQWs63rpCxpcIngskOsqIy0hbh4EbiuUYWGo1mTo"
+        "Ref": "CreateWorkoutLambdaVersionPA3RhZ2satDRAvgcyqq8qmlO0whyJSfqn9BV0kmJeto"
       }
     },
     "GetWorkoutsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetWorkoutsLambdaVersion8MAXoWdQ28tLWDEeIMx2jaqy3udcoKAnbtbZMxzN4"
+        "Ref": "GetWorkoutsLambdaVersionLW0KeuOnGAP0aYgvCwMQPFDmcSNixWXlJshIs0up1Xo"
       }
     },
     "GetWorkoutLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetWorkoutLambdaVersioneTvqccCMg9dERJbCnG7GF5FD84otpvVS32WoREMf4"
+        "Ref": "GetWorkoutLambdaVersionAKlitfxEaAXHIosen7yNIX1ujSneflU00h73dRbvTk"
       }
     },
     "ServiceEndpoint": {

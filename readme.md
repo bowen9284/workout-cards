@@ -18,6 +18,6 @@ From the client directory, run `npm install` followed by `npm start`
 
 - Better UI + Animations
 - Break down components into smaller pieces
-- More options for workouts to include multipliers or if they should be done
+- More options for workouts to include multipliers or if they should be done on each side, leg, arm etc.
 - Workout preview before you start
 - Alexa voice skill to complete the deck of cards from an Alexa enabled device

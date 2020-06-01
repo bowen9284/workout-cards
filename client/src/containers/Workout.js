@@ -53,7 +53,7 @@ const Workout = (props) => {
       setWorkout(result[0]);
     };
     loadWorkout();
-  }, []);
+  },);
 
   const handleStartClick = () => {
     setDeckSize(deckSize - 1);

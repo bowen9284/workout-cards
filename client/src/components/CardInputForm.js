@@ -59,7 +59,8 @@ const CardInputForm = (props) => {
   });
 
   async function _handleSubmit(workout) {
-    const result = await createWorkout('mocktoken', workout);
+    console.log(props.auth);
+    const result = await createWorkout(props.auth.idToken, workout);
     if (result) {
       props.history.push('/');
     }
@@ -68,7 +69,13 @@ const CardInputForm = (props) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid item xs={12}>
-        <Grid container direction="column" justify="center" spacing={2}>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          align-items="flex-end"
+          spacing={2}
+        >
           <Grid item>
             <TextField
               label="Created By"

@@ -152,6 +152,27 @@
                     "dynamodb:Query"
                   ],
                   "Resource": "arn:aws:dynamodb:us-east-1:*:table/Workouts-dev/index/WorkoutIdIndex"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "secretsmanager:GetSecretValue"
+                  ],
+                  "Resource": {
+                    "Ref": "Auth0Secret"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "kms:Decrypt"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "KMSKey",
+                      "Arn"
+                    ]
+                  }
                 }
               ]
             }
@@ -179,7 +200,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590894205654-2020-05-31T03:03:25.654Z/Auth.zip"
+          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/Auth.zip"
         },
         "FunctionName": "workout-deck-dev-Auth",
         "Handler": "src/lambda/auth/auth0Authorizer.handler",
@@ -206,14 +227,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AuthLambdaVersionNIkgVJiX3Beb1dhMH1s6pQjaWYMlOHd2v0RH5ot9K9Q": {
+    "AuthLambdaVersionH7pwIZt0xABCyQdyCAwWeOxSsCdT9zD6WEtd228zY": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthLambdaFunction"
         },
-        "CodeSha256": "XHD+hk/WORYdRdbDQ7b43GnlEntvbTVVzOXzky9k4BY="
+        "CodeSha256": "QkDQlvrfvWmzmNbx+A3sER4C3CrgwjjMYXgDRKK17As="
       }
     },
     "CreateWorkoutLambdaFunction": {
@@ -223,7 +244,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590894205654-2020-05-31T03:03:25.654Z/CreateWorkout.zip"
+          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/CreateWorkout.zip"
         },
         "FunctionName": "workout-deck-dev-CreateWorkout",
         "Handler": "src/lambda/http/createWorkout.handler",
@@ -250,14 +271,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateWorkoutLambdaVersionAwwnvJ3r1JTCxmIvBJ667pBai6RgFXmG01ChRFqgq0Q": {
+    "CreateWorkoutLambdaVersionTxnfQWs63rpCxpcIngskOsqIy0hbh4EbiuUYWGo1mTo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateWorkoutLambdaFunction"
         },
-        "CodeSha256": "bnPlp7k8vFqynvQcqcZsEUZm0fkHpeU1yyj6J0YD1bQ="
+        "CodeSha256": "vKW3YXBVc+dxVnHfCp4qARLaYVbRjjrfIuHz6GW5GbQ="
       }
     },
     "GetWorkoutsLambdaFunction": {
@@ -267,7 +288,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590894205654-2020-05-31T03:03:25.654Z/GetWorkouts.zip"
+          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/GetWorkouts.zip"
         },
         "FunctionName": "workout-deck-dev-GetWorkouts",
         "Handler": "src/lambda/http/getWorkouts.handler",
@@ -311,7 +332,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/workout-deck/dev/1590894205654-2020-05-31T03:03:25.654Z/GetWorkout.zip"
+          "S3Key": "serverless/workout-deck/dev/1590968299203-2020-05-31T23:38:19.203Z/GetWorkout.zip"
         },
         "FunctionName": "workout-deck-dev-GetWorkout",
         "Handler": "src/lambda/http/getWorkout.handler",
@@ -338,14 +359,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetWorkoutLambdaVersionO0ZJ4ZsU1kNxvp1DLXm7TpuYS5kBRiwRb3RGPkdetU": {
+    "GetWorkoutLambdaVersioneTvqccCMg9dERJbCnG7GF5FD84otpvVS32WoREMf4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetWorkoutLambdaFunction"
         },
-        "CodeSha256": "0YQ1Wouhu3TSFoHxpZbotPEqp5SDHp5DkCxLVkg6Id4="
+        "CodeSha256": "lYXHsdPN1pfa4gX4ly5Rl5hWFPOUOur4swM4I9+g0DM="
       }
     },
     "ApiGatewayRestApi": {
@@ -549,7 +570,10 @@
           "Ref": "ApiGatewayRestApi"
         },
         "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthApiGatewayAuthorizer"
+        },
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -578,7 +602,8 @@
           }
         },
         "MethodResponses": []
-      }
+      },
+      "DependsOn": "AuthApiGatewayAuthorizer"
     },
     "ApiGatewayMethodWorkoutsGet": {
       "Type": "AWS::ApiGateway::Method",
@@ -666,7 +691,41 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1590894179409": {
+    "AuthApiGatewayAuthorizer": {
+      "Type": "AWS::ApiGateway::Authorizer",
+      "Properties": {
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "Auth",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizerUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "AuthLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "/invocations"
+            ]
+          ]
+        },
+        "Type": "TOKEN"
+      }
+    },
+    "ApiGatewayDeployment1590968253226": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -689,6 +748,43 @@
         "FunctionName": {
           "Fn::GetAtt": [
             "CreateWorkoutLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "AuthLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AuthLambdaFunction",
             "Arn"
           ]
         },
@@ -834,6 +930,59 @@
         "BillingMode": "PAY_PER_REQUEST",
         "TableName": "Workouts-dev"
       }
+    },
+    "KMSKey": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "Description": "KMS key to encrypt Auth0 secret",
+        "KeyPolicy": {
+          "Version": "2012-10-17",
+          "Id": "key-default-1",
+          "Statement": [
+            {
+              "Sid": "Allow administration of the key",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      "arn:aws:iam:",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      "root"
+                    ]
+                  ]
+                }
+              },
+              "Action": [
+                "kms:*"
+              ],
+              "Resource": "*"
+            }
+          ]
+        }
+      }
+    },
+    "KMSKeyAlias": {
+      "Type": "AWS::KMS::Alias",
+      "Properties": {
+        "AliasName": "alias/auth0Key-dev",
+        "TargetKeyId": {
+          "Ref": "KMSKey"
+        }
+      }
+    },
+    "Auth0Secret": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Name": "Auth0Secret-dev",
+        "Description": "Auth0 secret",
+        "KmsKeyId": {
+          "Ref": "KMSKey"
+        }
+      }
     }
   },
   "Outputs": {
@@ -845,13 +994,13 @@
     "AuthLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthLambdaVersionNIkgVJiX3Beb1dhMH1s6pQjaWYMlOHd2v0RH5ot9K9Q"
+        "Ref": "AuthLambdaVersionH7pwIZt0xABCyQdyCAwWeOxSsCdT9zD6WEtd228zY"
       }
     },
     "CreateWorkoutLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateWorkoutLambdaVersionAwwnvJ3r1JTCxmIvBJ667pBai6RgFXmG01ChRFqgq0Q"
+        "Ref": "CreateWorkoutLambdaVersionTxnfQWs63rpCxpcIngskOsqIy0hbh4EbiuUYWGo1mTo"
       }
     },
     "GetWorkoutsLambdaFunctionQualifiedArn": {
@@ -863,7 +1012,7 @@
     "GetWorkoutLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetWorkoutLambdaVersionO0ZJ4ZsU1kNxvp1DLXm7TpuYS5kBRiwRb3RGPkdetU"
+        "Ref": "GetWorkoutLambdaVersioneTvqccCMg9dERJbCnG7GF5FD84otpvVS32WoREMf4"
       }
     },
     "ServiceEndpoint": {

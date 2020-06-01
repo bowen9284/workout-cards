@@ -1,0 +1,19 @@
+"contex {
+    callbackWaitsForEmptyEventLoop: [Getter/Setter],
+    succeed: [Function],
+    fail: [Function],
+    done: [Function],
+    functionVersion: '$LATEST',
+    functionName: 'workout-deck-dev-Auth',
+    memoryLimitInMB: '1024',
+    logGroupName: '/aws/lambda/workout-deck-dev-Auth',
+    logStreamName: '2020/05/31/[$LATEST]bda32b01457940e99a6f8664071a631a',
+    clientContext: undefined,
+    identity: undefined,
+    invokedFunctionArn: 'arn:aws:lambda:us-east-1:313572922723:function:workout-deck-dev-Auth',
+    awsRequestId: '4cde25aa-d8c2-4666-9242-5dbeec2ac116',
+    getRemainingTimeInMillis: [Function: getRemainingTimeInMillis],
+    AUTH_0_SECRET: {
+      auth0Secret: 'f_lCv6lhBHI7NaUPjpar7KmOoIxGDMFz3D85ybv9YRNgMrHiI7Kl6E3w6xknLA7L'
+    }
+  }

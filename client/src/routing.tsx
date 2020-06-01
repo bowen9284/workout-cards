@@ -2,13 +2,9 @@ import React from 'react';
 import Auth from './auth/Auth';
 import { Router, Route, Switch } from 'react-router-dom';
 import Callback from './components/Callback';
-import createHistory from 'history/createBrowserHistory';
 import App from './App';
 import Layout from './components/Layout';
-import CreateOrChoose from './components/CreateOrChoose';
-import WorkoutBuilder from './containers/WorkoutBuilder';
-import WorkoutList from './containers/WorkoutList';
-import Workout from './containers/Workout';
+import { createBrowserHistory as createHistory } from 'history';
 
 const history = createHistory();
 
@@ -28,22 +24,16 @@ export const makeAuthRouting = () => {
         <Switch>
           <Route
             path="/callback"
-            render={(props: any) => {
+            render={(props) => {
               handleAuthentication(props);
               return <Callback />;
             }}
           />
           <Route
-            render={(props: any) => {
+            render={(props) => {
               return <App auth={auth} {...props} />;
             }}
           />
-          <Route path="/createWorkout" component={WorkoutBuilder} />
-          <Route path="/workouts/:workoutId" component={Workout} />
-
-          <Route path="/workouts" component={WorkoutList} />
-
-          <Route path="/" component={CreateOrChoose} />
         </Switch>
       </Layout>
     </Router>

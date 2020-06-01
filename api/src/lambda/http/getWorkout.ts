@@ -17,11 +17,6 @@ export const handler: APIGatewayProxyHandler = async (
   console.log('Caller event: ', event);
   const workoutId = event.pathParameters.workoutId;
 
-  //   const authorization = event.headers.Authorization;
-  //   const split = authorization.split(' ');
-  //   const jwtToken = split[1];
-  //   const userId = getUserId(jwtToken);
-
   let item = await docClient
     .query({
       TableName: workoutTable,

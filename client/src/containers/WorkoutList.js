@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,8 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { getWorkouts } from '../api/workouts-api';
-import { Route, useRouteMatch, withRouter } from 'react-router-dom';
-import Workout from './Workout';
+import { useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles({
   table: {
@@ -18,13 +17,14 @@ const useStyles = makeStyles({
   },
 });
 
-function WorkoutList(props) {
+function WorkoutList({ history, auth }) {
+  console.log('allprops wol', auth);
   const [workoutList, setWorkoutList] = useState([]);
-  let { path, url } = useRouteMatch();
+  let { path } = useRouteMatch();
 
   useEffect(() => {
     const loadWorkouts = async () => {
-      const workouts = await getWorkouts();
+      const workouts = await getWorkouts(auth.idToken);
       setWorkoutList(workouts.Items);
     };
     loadWorkouts();
@@ -44,7 +44,7 @@ function WorkoutList(props) {
 
   const classes = useStyles();
   const handleClick = (workoutId) => {
-    props.history.push(`${path}/${workoutId}`);
+    history.push(`${path}/${workoutId}`);
   };
   return (
     <TableContainer component={Paper}>
@@ -79,4 +79,4 @@ function WorkoutList(props) {
   );
 }
 
-export default withRouter(WorkoutList);
+export default WorkoutList;

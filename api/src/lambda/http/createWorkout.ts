@@ -7,6 +7,7 @@ import {
 import 'source-map-support/register';
 import * as AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { getUserId } from '../../auth/utils';
 
 const docClient: DocumentClient = createDynamoDBClient();
 const workoutTable = process.env.WORKOUTS_TABLE;
@@ -18,12 +19,13 @@ export const handler: APIGatewayProxyHandler = async (
 
   let newWorkout: Workout = JSON.parse(event.body);
 
-  //   const authorization = event.headers.Authorization;
-  //   const split = authorization.split(' ');
-  //   const jwtToken = split[1];
-  //   const userId = getUserId(jwtToken);
+  const authorization = event.headers.Authorization;
+  console.log('auth ',authorization)
+  const split = authorization.split(' ');
+  const jwtToken = split[1];
+  const userId = getUserId(jwtToken);
 
-  newWorkout.userId = '123';
+  newWorkout.userId = userId;
 
   const newItem = await docClient
     .put({

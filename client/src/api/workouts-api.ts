@@ -13,29 +13,30 @@ export async function createWorkout(
     {
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`,
       },
     }
   );
   return response.data.item;
 }
 
-export async function getWorkouts(): Promise<Workout[]> {
+export async function getWorkouts(idToken: string): Promise<Workout[]> {
   const response = await axios.get(`${apiEndpoint}/workouts`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${idToken}`,
+    },
+  });
+
+  return response.data.items;
+}
+
+export async function getWorkout(workoutId: string): Promise<Workout> {
+  const response = await axios.get(`${apiEndpoint}/workouts/${workoutId}`, {
     headers: {
       'Content-Type': 'application/json',
     },
   });
 
-  return response.data.items
+  return response.data.item.Items;
 }
-
-export async function getWorkout(workoutId: string): Promise<Workout> {
-    const response = await axios.get(`${apiEndpoint}/workouts/${workoutId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    
-    return response.data.item.Items
-  }
-  

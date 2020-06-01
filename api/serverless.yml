@@ -1,3 +1,5 @@
+org: bowen9284
+app: workout-deck
 service:
   name: workout-deck
 

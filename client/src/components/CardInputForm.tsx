@@ -10,8 +10,31 @@ import { withRouter } from 'react-router-dom';
 import { useFormik } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createWorkout } from '../api/workouts-api';
+import { makeStyles, Paper } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  paper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: theme.spacing(16),
+      height: theme.spacing(16),
+    },
+  },
+}));
 
 const CardInputForm: React.FC = (props: any) => {
+  const classes = useStyles();
+
   const workoutOptions = [
     { name: 'Please Select...', value: 'Please Select...' },
     { name: 'squats', value: 'Squats' },
@@ -81,25 +104,25 @@ const CardInputForm: React.FC = (props: any) => {
   ];
 
   interface FormField {
-    id: string
-    label: string
-    name: string
-    validation: boolean
+    id: string;
+    label: string;
+    name: string;
+    validation: boolean;
   }
 
   interface Values {
-    createdBy: string
-    workoutName: string
-    heartsActivity: string
-    spadesActivity: string
-    clubsActivity: string
-    diamondsActivity: string
-    jacksActivity: string
-    queensActivity:string
-    kingsActivity: string
-    acesActivity: string
-    jokersActivity: string
-    workoutId?: string
+    createdBy: string;
+    workoutName: string;
+    heartsActivity: string;
+    spadesActivity: string;
+    clubsActivity: string;
+    diamondsActivity: string;
+    jacksActivity: string;
+    queensActivity: string;
+    kingsActivity: string;
+    acesActivity: string;
+    jokersActivity: string;
+    workoutId?: string;
   }
 
   const formik = useFormik({
@@ -114,7 +137,7 @@ const CardInputForm: React.FC = (props: any) => {
       queensActivity: workoutOptions[0].name,
       kingsActivity: workoutOptions[0].name,
       acesActivity: workoutOptions[0].name,
-      jokersActivity: workoutOptions[0].name
+      jokersActivity: workoutOptions[0].name,
     },
     validationSchema: Yup.object({
       createdBy: Yup.string()
@@ -126,6 +149,7 @@ const CardInputForm: React.FC = (props: any) => {
         .max(20, 'Must be 20 characters or less')
         .required('Required'),
     }),
+    
     onSubmit: (values: Values) => {
       let workoutToSave = { ...values };
       workoutToSave.workoutId = uuid();
@@ -149,53 +173,54 @@ const CardInputForm: React.FC = (props: any) => {
           align-items="flex-end"
           spacing={2}
         >
-          <Grid item>
-            <TextField
-              label="Created By"
-              name="createdBy"
-              onChange={formik.handleChange}
-              value={formik.values.createdBy}
-            />
-            {formik.touched.createdBy && formik.errors.createdBy ? (
-              <div>{formik.errors.createdBy}</div>
-            ) : null}
-          </Grid>
-          <Grid item>
-            <TextField
-              label="Workout name"
-              name="workoutName"
-              onChange={formik.handleChange}
-              value={formik.values.workoutName}
-            />
-            {formik.touched.workoutName && formik.errors.workoutName ? (
-              <div>{formik.errors.workoutName}</div>
-            ) : null}
-          </Grid>
+          <div className={classes.paper}>
+            <Paper elevation={3}>
+              <Grid item>
+                <TextField
+                  label="Created By"
+                  name="createdBy"
+                  onChange={formik.handleChange}
+                  value={formik.values.createdBy}
+                />
+                {formik.touched.createdBy && formik.errors.createdBy ? (
+                  <div>{formik.errors.createdBy}</div>
+                ) : null}
+              </Grid>
+              <Grid item>
+                <TextField
+                  label="Workout name"
+                  name="workoutName"
+                  onChange={formik.handleChange}
+                  value={formik.values.workoutName}
+                />
+                {formik.touched.workoutName && formik.errors.workoutName ? (
+                  <div>{formik.errors.workoutName}</div>
+                ) : null}
+              </Grid>
+            </Paper>
 
-          {selectFields.map((sf: FormField) => (
-            <Grid item>
-              <InputLabel id={sf.id}>{sf.label}</InputLabel>
-              <Select
-                labelId={sf.id}
-                name={sf.name}
-                value={formik.values[sf.name as keyof Values]}
-                onChange={formik.handleChange}
-              >
-                {workoutOptions.map((workout) => (
-                  <MenuItem key={workout.value} value={workout.value}>
-                    {workout.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-          ))}
-
+            {selectFields.map((sf: FormField) => (
+              <Paper elevation={3}>
+                <Grid key={sf.id} item>
+                  <InputLabel id={sf.id}>{sf.label}</InputLabel>
+                  <Select
+                    labelId={sf.id}
+                    name={sf.name}
+                    value={formik.values[sf.name as keyof Values]}
+                    onChange={formik.handleChange}
+                  >
+                    {workoutOptions.map((workout) => (
+                      <MenuItem key={workout.value} value={workout.value}>
+                        {workout.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+              </Paper>
+            ))}
+          </div>
           <Grid item>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
+            <Button type="submit" variant="contained" color="primary">
               Save
             </Button>
           </Grid>

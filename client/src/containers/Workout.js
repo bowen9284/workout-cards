@@ -29,23 +29,16 @@ const useStyles = makeStyles({
   },
 });
 
-const Workout = (props) => {
+const Workout = ({ history }) => {
   const classes = useStyles();
-  const cardsCopy = [...cards];
 
   let { workoutId } = useParams();
   let { url } = useRouteMatch();
 
-  const getRandomIndex = (min, max) => {
-    return Math.floor(Math.random() * (max - min) + min);
-  };
-
   const [workout, setWorkout] = useState([]);
-  const [currentCardIndex, setCurrentCardIndex] = useState(
-    getRandomIndex(0, 53)
-  );
+  const [currentCardIndex, setCurrentCardIndex] = useState(null);
   const [buttonAction, setButtonAction] = useState('Start');
-  const [deckSize, setDeckSize] = useState(cardsCopy.length);
+  const [deckSize, setDeckSize] = useState(cards.length);
 
   useEffect(() => {
     const loadWorkout = async () => {
@@ -53,9 +46,23 @@ const Workout = (props) => {
       setWorkout(result[0]);
     };
     loadWorkout();
-  },);
+  }, []);
+
+  useEffect(() => {
+    history.push(`${url}/`);
+  }, []);
+
+  useEffect(() => {
+    history.push(`${url}/${currentCardIndex}`);
+  }, [currentCardIndex]);
+
+  const getRandomIndex = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min);
+  };
 
   const handleStartClick = () => {
+    setCurrentCardIndex(getRandomIndex(1, 54));
+
     setDeckSize(deckSize - 1);
 
     getNextCard();
@@ -66,19 +73,17 @@ const Workout = (props) => {
     cards.splice(currentCardIndex, 1);
     setDeckSize(deckSize - 1);
 
-    console.log('size', deckSize);
-
-    if (deckSize === 1) {
+    if (deckSize === 0) {
       setButtonAction('Done');
       return;
     }
-    
+
     getNextCard();
   };
 
   const getNextCard = () => {
     setCurrentCardIndex(getRandomIndex(0, deckSize));
-    props.history.push(`${url}/${currentCardIndex}`);
+    history.push(`${url}/${currentCardIndex}`);
   };
 
   const handleDoneClick = () => {
@@ -151,6 +156,7 @@ const Workout = (props) => {
             <CardActions>{progressButton(buttonAction)}</CardActions>
           </Card>
           <Grid container spacing={4}>
+            <Route path={`${url}/`}></Route>
             <Route exact path={`${url}/:cardIndex`}>
               <WorkoutCard
                 currentCard={cards[currentCardIndex]}

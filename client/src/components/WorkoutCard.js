@@ -5,8 +5,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-const WorkoutCard = (props) => {
-  const { currentCard, workoutActivity } = props;
+const WorkoutCard = ({currentCard, workoutActivity}) => {
+
+  if (!currentCard) {
+    return null;
+  }
   console.log('currentcard', currentCard);
   const image = require(`../assets${currentCard.image}`);
 

@@ -2,7 +2,6 @@ export interface Workout {
     userId?: string
     timestamp?: string
     workoutId?: string
-
     createdBy: string
     workoutName: string
     heartActivity: string

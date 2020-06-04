@@ -7,8 +7,17 @@ import CardInputForm from './components/CardInputForm';
 import Workout from './containers/Workout';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+}));
 
 const App = (props) => {
+  let classes = useStyles();
   const handleLogin = () => {
     props.auth.login();
   };
@@ -26,7 +35,7 @@ const App = (props) => {
       );
     } else {
       return (
-        <Button name="login" size="" variant="contained" onClick={handleLogin}>
+        <Button name="login" variant="contained" onClick={handleLogin}>
           Log In
         </Button>
       );
@@ -34,10 +43,9 @@ const App = (props) => {
   };
 
   const generateCurrentPage = () => {
-    console.log('auth props', props.auth);
-    if (!props.auth.isAuthenticated()) {
-      return null;
-    }
+    // if (!props.auth.isAuthenticated()) {
+    //   return null;
+    // }
     return (
       <Switch>
         <Route
@@ -65,10 +73,11 @@ const App = (props) => {
       alignItems="center"
       justify="center"
       style={{ minHeight: '50vh' }}
+      className={classes.root}
     >
       <Router history={props.history}>
-          {generateCurrentPage()}
-          {logInLogOutButton()}
+        {generateCurrentPage()}
+        {logInLogOutButton()}
       </Router>
     </Grid>
   );

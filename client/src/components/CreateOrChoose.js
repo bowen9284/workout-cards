@@ -5,13 +5,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-const CreateOrChoose = (props) => {
+const CreateOrChoose = ({ history }) => {
   const createWorkoutHandler = () => {
-    props.history.push('/createWorkout');
+    history.push('/createWorkout');
   };
 
   const chooseWorkoutHandler = () => {
-    props.history.push('/workouts');
+    history.push('/workouts');
   };
 
   return (

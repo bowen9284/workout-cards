@@ -6,7 +6,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 const WorkoutCard = ({currentCard, workoutActivity}) => {
-
   if (!currentCard) {
     return null;
   }

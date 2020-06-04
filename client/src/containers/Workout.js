@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,6 +10,7 @@ import { getWorkout } from '../api/workouts-api';
 import Grid from '@material-ui/core/Grid';
 import cards from '../assets/cards.json';
 import WorkoutCard from '../components/WorkoutCard';
+import WorkoutFinished from '../components/WorkoutFinished';
 
 const useStyles = makeStyles({
   root: {
@@ -36,7 +37,7 @@ const Workout = ({ history }) => {
   let { url } = useRouteMatch();
 
   const [workout, setWorkout] = useState([]);
-  const [currentCardIndex, setCurrentCardIndex] = useState(null);
+  const [currentCardIndex, setCurrentCardIndex] = useState(-1);
   const [buttonAction, setButtonAction] = useState('Start');
   const [deckSize, setDeckSize] = useState(cards.length);
 
@@ -49,11 +50,7 @@ const Workout = ({ history }) => {
   }, []);
 
   useEffect(() => {
-    history.push(`${url}/`);
-  }, []);
-
-  useEffect(() => {
-    history.push(`${url}/${currentCardIndex}`);
+    // @todo update route without render to prevend dupe renders
   }, [currentCardIndex]);
 
   const getRandomIndex = (min, max) => {
@@ -62,10 +59,7 @@ const Workout = ({ history }) => {
 
   const handleStartClick = () => {
     setCurrentCardIndex(getRandomIndex(1, 54));
-
     setDeckSize(deckSize - 1);
-
-    getNextCard();
     setButtonAction('Next Card');
   };
 
@@ -83,11 +77,10 @@ const Workout = ({ history }) => {
 
   const getNextCard = () => {
     setCurrentCardIndex(getRandomIndex(0, deckSize));
-    history.push(`${url}/${currentCardIndex}`);
   };
 
   const handleDoneClick = () => {
-    //transition to congrats page
+    history.push(`${url}/complete`);
   };
 
   const progressButton = (action) => {
@@ -130,43 +123,44 @@ const Workout = ({ history }) => {
   };
 
   return (
-    <Fragment>
-      <Grid
-        container
-        spacing={0}
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: '50vh' }}
-      >
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom
-              >
-                Name: {workout.workoutName}
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                Created By: {workout.createdBy}
-              </Typography>
-              <Typography variant="body2" component="p"></Typography>
-            </CardContent>
-            <CardActions>{progressButton(buttonAction)}</CardActions>
-          </Card>
-          <Grid container spacing={4}>
-            <Route path={`${url}/`}></Route>
-            <Route exact path={`${url}/:cardIndex`}>
-              <WorkoutCard
-                currentCard={cards[currentCardIndex]}
-                workoutActivity={workout}
-              />
-            </Route>
-          </Grid>
+    <Grid
+      container
+      spacing={0}
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: '50vh' }}
+    >
+      <Grid item xs={12}>
+        <Card>
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color="textSecondary"
+              gutterBottom
+            >
+              Name: {workout.workoutName}
+            </Typography>
+            <Typography className={classes.pos} color="textSecondary">
+              Created By: {workout.createdBy}
+            </Typography>
+            <Typography variant="body2" component="p"></Typography>
+          </CardContent>
+          <CardActions>{progressButton(buttonAction)}</CardActions>
+        </Card>
+        <Grid container spacing={4}>
+          <Route path={`${url}/`}></Route>
+          <Route exact path={`${url}/:cardIndex`}>
+            <WorkoutCard
+              currentCard={cards[currentCardIndex]}
+              workoutActivity={workout}
+            />
+          </Route>
+          <Route exact path={`${url}/complete`}>
+            <WorkoutFinished></WorkoutFinished>
+          </Route>
         </Grid>
       </Grid>
-    </Fragment>
+    </Grid>
   );
 };
 

@@ -3,7 +3,7 @@ import React from 'react'
 const CardPreview = () => {
     return (
         <div>
-            
+            J
         </div>
     )
 }

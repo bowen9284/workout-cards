@@ -6,7 +6,7 @@ const Layout = (props) => {
   return (
     <Fragment>
       <Navigation />
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <div>{props.children}</div>
       </Container>
     </Fragment>

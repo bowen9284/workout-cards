@@ -67,18 +67,13 @@ const App = (props) => {
   };
 
   return (
-    <Grid
-      container
-      spacing={0}
-      alignItems="center"
-      justify="center"
-      style={{ minHeight: '50vh' }}
-      className={classes.root}
-    >
-      <Router history={props.history}>
-        {generateCurrentPage()}
-        {logInLogOutButton()}
-      </Router>
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <Router history={props.history}>
+          {generateCurrentPage()}
+          {logInLogOutButton()}
+        </Router>
+      </Grid>
     </Grid>
   );
 };

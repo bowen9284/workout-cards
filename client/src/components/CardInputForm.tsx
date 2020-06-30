@@ -14,16 +14,11 @@ import { makeStyles, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-  },
-  content: {
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
+    textAlign: 'center',
   },
   paper: {
     display: 'flex',
-    flexWrap: 'wrap',
     '& > *': {
       margin: theme.spacing(1),
       width: theme.spacing(16),
@@ -149,7 +144,7 @@ const CardInputForm: React.FC = (props: any) => {
         .max(20, 'Must be 20 characters or less')
         .required('Required'),
     }),
-    
+
     onSubmit: (values: Values) => {
       let workoutToSave = { ...values };
       workoutToSave.workoutId = uuid();
@@ -164,69 +159,57 @@ const CardInputForm: React.FC = (props: any) => {
   }
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid item xs={12}>
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          align-items="flex-end"
-          spacing={2}
-        >
-          <div className={classes.paper}>
-            <Paper elevation={3}>
-              <Grid item>
-                <TextField
-                  label="Created By"
-                  name="createdBy"
-                  onChange={formik.handleChange}
-                  value={formik.values.createdBy}
-                />
-                {formik.touched.createdBy && formik.errors.createdBy ? (
-                  <div>{formik.errors.createdBy}</div>
-                ) : null}
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Workout name"
-                  name="workoutName"
-                  onChange={formik.handleChange}
-                  value={formik.values.workoutName}
-                />
-                {formik.touched.workoutName && formik.errors.workoutName ? (
-                  <div>{formik.errors.workoutName}</div>
-                ) : null}
-              </Grid>
-            </Paper>
+    <div className={classes.root}>
+      <form onSubmit={formik.handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              label="Created By"
+              name="createdBy"
+              onChange={formik.handleChange}
+              value={formik.values.createdBy}
+            />
+            {formik.touched.createdBy && formik.errors.createdBy ? (
+              <div>{formik.errors.createdBy}</div>
+            ) : null}
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Workout name"
+              name="workoutName"
+              onChange={formik.handleChange}
+              value={formik.values.workoutName}
+            />
+            {formik.touched.workoutName && formik.errors.workoutName ? (
+              <div>{formik.errors.workoutName}</div>
+            ) : null}
+          </Grid>
 
-            {selectFields.map((sf: FormField) => (
-              <Paper elevation={3}>
-                <Grid key={sf.id} item>
-                  <InputLabel id={sf.id}>{sf.label}</InputLabel>
-                  <Select
-                    labelId={sf.id}
-                    name={sf.name}
-                    value={formik.values[sf.name as keyof Values]}
-                    onChange={formik.handleChange}
-                  >
-                    {workoutOptions.map((workout) => (
-                      <MenuItem key={workout.value} value={workout.value}>
-                        {workout.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-              </Paper>
-            ))}
-          </div>
-          <Grid item>
+          {selectFields.map((sf: FormField) => (
+            <Grid key={sf.id} item xs={6}>
+              <InputLabel id={sf.id}>{sf.label}</InputLabel>
+              <Select
+                labelId={sf.id}
+                name={sf.name}
+                value={formik.values[sf.name as keyof Values]}
+                onChange={formik.handleChange}
+              >
+                {workoutOptions.map((workout) => (
+                  <MenuItem key={workout.value} value={workout.value}>
+                    {workout.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+          ))}
+          <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary">
               Save
             </Button>
           </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+    </div>
   );
 };
 

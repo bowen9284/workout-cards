@@ -20,7 +20,7 @@
     "webpack": "^4.43.0"
   },
   "devDependencies": {
-    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-dynamodb-local": "^1.0.2",
     "serverless-offline": "^6.3.0"
   }
 }
